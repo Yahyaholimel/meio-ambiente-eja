@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="pt-PT" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meio Ambiente, Saúde Pública e Cidadania - Projeto EJA / Direito</title>
+    
+    <!-- Google Fonts & Lucide Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        eco: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                            950: '#052e16',
+                        },
+                        ocean: {
+                            50: '#f0f9ff',
+                            500: '#0ea5e9',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        earth: {
+                            50: '#faf5f0',
+                            100: '#f3e8dc',
+                            800: '#543d2b',
+                            900: '#382618',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scroll Animations & Glassmorphism */
+        .glass-header {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+        }
+
+        .glass-card-dark {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Scroll Animation Utility Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px) scale(0.96);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px) rotate(-1deg);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(50px) rotate(1deg);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        .reveal-3d {
+            opacity: 0;
+            transform: perspective(1000px) rotateX(25deg) translateY(60px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        .reveal.active, .reveal-left.active, .reveal-right.active, .reveal-3d.active {
+            opacity: 1;
+            transform: translateY(0) translateX(0) scale(1) rotate(0deg) rotateX(0deg);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #16a34a;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #15803d;
+        }
+
+        /* Auto-scroll active indicator animation */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 0.4; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+        .pulse-active {
+            animation: pulse-ring 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-eco-500 selection:text-white overflow-x-hidden">
+
+    <!-- Progress Bar Barra de Leitura Superior -->
+    <div class="fixed top-0 left-0 w-full h-1.5 bg-slate-200/50 z-50">
+        <div id="progress-bar" class="h-full bg-gradient-to-r from-eco-500 via-teal-500 to-ocean-500 w-0 transition-all duration-150 ease-out"></div>
+    </div>
+
+    <!-- Navegação / Header Fixo -->
+    <header class="fixed top-1.5 left-0 w-full z-40 glass-header transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logótipo / Título Curto -->
+                <a href="#hero" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-eco-600 to-teal-700 flex items-center justify-center text-white shadow-lg shadow-eco-600/30 group-hover:scale-105 transition-transform">
+                        <i data-lucide="leaf" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-extrabold text-slate-900 tracking-tight text-base sm:text-lg leading-tight">Cidadania Ambiental</span>
+                        <span class="text-xs text-eco-700 font-semibold tracking-wider uppercase">EJA & Direito</span>
+                    </div>
+                </a>
+
+                <!-- Links da Navegação (Desktop) -->
+                <nav class="hidden lg:flex items-center space-x-1">
+                    <a href="#dupla1" class="px-3 py-2 text-xs font-medium text-slate-700 hover:text-eco-600 hover:bg-eco-50 rounded-xl transition">Qualidade de Vida</a>
+                    <a href="#dupla2" class="px-3 py-2 text-xs font-medium text-slate-700 hover:text-eco-600 hover:bg-eco-50 rounded-xl transition">Enchentes</a>
+                    <a href="#dupla3" class="px-3 py-2 text-xs font-medium text-slate-700 hover:text-eco-600 hover:bg-eco-50 rounded-xl transition">Lixo & Saúde</a>
+                    <a href="#dupla4" class="px-3 py-2 text-xs font-medium text-slate-700 hover:text-eco-600 hover:bg-eco-50 rounded-xl transition">Saneamento</a>
+                    <a href="#dupla5" class="px-3 py-2 text-xs font-medium text-slate-700 hover:text-eco-600 hover:bg-eco-50 rounded-xl transition">Poluição</a>
+                    <a href="#dupla6" class="px-3 py-2 text-xs font-medium text-slate-700 hover:text-eco-600 hover:bg-eco-50 rounded-xl transition">Direitos CF/88</a>
+                    <a href="#ods" class="px-3 py-2 text-xs font-semibold text-white bg-eco-600 hover:bg-eco-700 rounded-xl shadow-md transition ml-2">ODS</a>
+                </nav>
+
+                <!-- Botão Menu Mobile -->
+                <div class="flex items-center lg:hidden">
+                    <button id="mobile-menu-btn" class="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Mobile Desdobrável -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white/95 backdrop-blur-xl border-b border-slate-200 px-4 pt-2 pb-6 space-y-2">
+            <a href="#dupla1" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-eco-50 hover:text-eco-600">1. Meio Ambiente e Qualidade de Vida</a>
+            <a href="#dupla2" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-eco-50 hover:text-eco-600">2. Enchentes e Saúde Pública</a>
+            <a href="#dupla3" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-eco-50 hover:text-eco-600">3. Lixo e Doenças</a>
+            <a href="#dupla4" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-eco-50 hover:text-eco-600">4. Água, Saneamento e Saúde</a>
+            <a href="#dupla5" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-eco-50 hover:text-eco-600">5. Poluição e Saúde</a>
+            <a href="#dupla6" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-eco-50 hover:text-eco-600">6. Meio Ambiente e Direitos</a>
+            <a href="#ods" class="mobile-link block px-3 py-2 rounded-lg text-base font-semibold text-eco-700 bg-eco-50">Conclusão e ODS</a>
+        </div>
+    </header>
+
+    <!-- Controlo Flutuante Lateral (Auto-Scroll & Voltar ao Topo) -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col space-y-3">
+        <!-- Botão Auto-Scroll Infinito -->
+        <button id="auto-scroll-btn" title="Ativar/Desativar Rolar Automático" class="group flex items-center justify-center w-12 h-12 rounded-2xl bg-white text-slate-700 shadow-xl border border-slate-200 hover:border-eco-500 hover:text-eco-600 transition-all duration-300 relative">
+            <span id="auto-scroll-indicator" class="hidden absolute inset-0 rounded-2xl bg-eco-500/20 pulse-active"></span>
+            <i data-lucide="play" id="auto-scroll-icon" class="w-5 h-5 relative z-10 transition-transform group-hover:scale-110"></i>
+        </button>
+
+        <!-- Botão Voltar ao Topo -->
+        <button id="back-to-top" title="Voltar ao Topo" class="opacity-0 pointer-events-none flex items-center justify-center w-12 h-12 rounded-2xl bg-eco-600 text-white shadow-xl hover:bg-eco-700 transition-all duration-300">
+            <i data-lucide="arrow-up" class="w-5 h-5"></i>
+        </button>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main>
+
+        <!-- 1. HERO SECTION / CAPA -->
+        <section id="hero" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-b from-eco-50/50 via-slate-50 to-white">
+            <!-- Círculos Decorativos de Fundo Parallax -->
+            <div class="absolute top-1/4 left-10 w-96 h-96 bg-eco-200/40 rounded-full filter blur-3xl -z-10 animate-pulse"></div>
+            <div class="absolute bottom-1/4 right-10 w-96 h-96 bg-teal-200/30 rounded-full filter blur-3xl -z-10"></div>
+
+            <div class="max-w-5xl mx-auto text-center reveal-3d">
+                <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-eco-100 text-eco-800 text-sm font-medium mb-8 border border-eco-200 shadow-sm">
+                    <i data-lucide="shield-check" class="w-4 h-4 text-eco-600"></i>
+                    <span>Projeto de Intervenção Social & Jurídica</span>
+                </div>
+
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 tracking-tight leading-[1.15] mb-8">
+                    Meio Ambiente, Saúde Pública e <span class="bg-clip-text text-transparent bg-gradient-to-r from-eco-600 via-teal-600 to-ocean-800">Cidadania</span>
+                </h1>
+
+                <p class="text-lg sm:text-2xl text-slate-600 max-w-3xl mx-auto font-light leading-relaxed mb-12">
+                    Conscientização ambiental e a sua relação direta com a saúde, a dignidade humana e a qualidade de vida.
+                </p>
+
+                <!-- Card Apresentação do Projeto -->
+                <div class="glass-card rounded-3xl p-6 sm:p-8 max-w-3xl mx-auto text-left border border-slate-200/80 shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-2 h-full bg-gradient-to-b from-eco-500 to-teal-600"></div>
+                    <div class="flex items-start space-x-4">
+                        <div class="p-3 bg-eco-100 text-eco-700 rounded-2xl hidden sm:block">
+                            <i data-lucide="graduation-cap" class="w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xs font-bold text-eco-700 uppercase tracking-widest mb-1">Apresentação do Projeto</h2>
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">Educação de Jovens e Adultos (EJA) & Curso de Direito</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                Este portal interativo consolida o trabalho de intervenção comunitária focado na literacia jurídica e ambiental. Unindo teoria do Direito e aplicação prática na saúde pública, exploramos as vertentes fundamentais para o desenvolvimento sustentável e cidadania plena.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scroll Indicator Icon -->
+                <div class="mt-16 flex flex-col items-center justify-center space-y-2 text-slate-400">
+                    <span class="text-xs tracking-widest uppercase font-semibold">Explore o Projeto</span>
+                    <i data-lucide="chevron-down" class="w-6 h-6 animate-bounce text-eco-600"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO DIVISORA DE TRANSIÇÃO -->
+        <div class="w-full bg-gradient-to-r from-eco-600 to-teal-700 py-3 text-white text-center text-xs tracking-widest uppercase font-bold shadow-inner">
+            Eixos Temáticos de Intervenção
+        </div>
+
+        <!-- 2. DUPLA 1: MEIO AMBIENTE E QUALIDADE DE VIDA -->
+        <section id="dupla1" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-slate-200">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Informações do Grupo -->
+                <div class="lg:col-span-5 reveal-left">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-eco-100 text-eco-800 text-xs font-bold mb-4">
+                        <i data-lucide="users" class="w-4 h-4"></i>
+                        <span>Dupla 1 • Samara e Layane</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
+                        Meio Ambiente e Qualidade de Vida
+                    </h2>
+                    <p class="text-slate-600 text-base leading-relaxed mb-6">
+                        A preservação ambiental não é um conceito abstrato, mas uma garantia básica para a sobrevivência humana com dignidade. Um ecossistema equilibrado atua diretamente na prevenção primária de enfermidades.
+                    </p>
+                    <div class="p-4 rounded-2xl bg-eco-50/80 border border-eco-200/80 text-eco-900 text-sm font-medium flex items-center space-x-3">
+                        <i data-lucide="heart-pulse" class="w-6 h-6 text-eco-600 shrink-0"></i>
+                        <span>Espaços preservados são barreiras naturais contra a proliferação de vetores e a degradação física e mental.</span>
+                    </div>
+                </div>
+
+                <!-- Tópicos em Cards -->
+                <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6 reveal-right">
+                    <!-- Card 1 -->
+                    <div class="glass-card p-6 rounded-3xl hover:shadow-xl transition-all duration-300 border-l-4 border-l-eco-500">
+                        <div class="w-10 h-10 rounded-xl bg-eco-100 text-eco-700 flex items-center justify-center mb-4">
+                            <i data-lucide="wind" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">Redução de Exposição</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            A diminuição do contacto direto com poluentes atmosféricos e agentes infecciosos reduz drasticamente as internamentos hospitalares por complicações cardiorrespiratórias.
+                        </p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="glass-card p-6 rounded-3xl hover:shadow-xl transition-all duration-300 border-l-4 border-teal-500">
+                        <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center mb-4">
+                            <i data-lucide="smile" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">Bem-Estar Mental</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            O contacto regular com áreas verdes urbanas reduz comprovadamente os níveis de cortisol (stress), atenua sintomas de ansiedade e fortalece a coesão social.
+                        </p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="glass-card p-6 rounded-3xl hover:shadow-xl transition-all duration-300 border-l-4 border-ocean-500">
+                        <div class="w-10 h-10 rounded-xl bg-ocean-50 text-ocean-800 flex items-center justify-center mb-4">
+                            <i data-lucide="shield" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">Segurança & Biodiversidade</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Espaços limpos, arborizados e bem iluminados inibem focos de criminalidade e promovem a conservação da fauna e flora locais nas zonas urbanas.
+                        </p>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="glass-card p-6 rounded-3xl hover:shadow-xl transition-all duration-300 border-l-4 border-emerald-600">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center mb-4">
+                            <i data-lucide="users-round" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">Ação Coletiva Sustentável</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            A transformação comunitária consolida-se através da cooperação contínua na conservação dos espaços públicos e na gestão responsável do meio ambiente.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. DUPLA 2: ENCHENTES E SAÚDE PÚBLICA -->
+        <section id="dupla2" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-slate-200">
+            <div class="reveal">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-blue-100 text-blue-800 text-xs font-bold mb-4">
+                        <i data-lucide="users" class="w-4 h-4"></i>
+                        <span>Dupla 2 • Yasmin e Juliana</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
+                        Enchentes e Saúde Pública
+                    </h2>
+                    <p class="text-slate-600 text-base sm:text-lg">
+                        Análise das causas, contaminações graves, prevenção e responsabilização jurídica em acidentes ambientais urbanos.
+                    </p>
+                </div>
+
+                <!-- Causas & Problema do Lixo -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <!-- Factores Naturais e Antrópicos -->
+                    <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm relative overflow-hidden">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="p-3 bg-blue-50 text-blue-600 rounded-2xl">
+                                <i data-lucide="cloud-rain" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-900">Principais Causas das Enchentes</h3>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider block mb-1">Causas Naturais</span>
+                                <p class="text-sm text-slate-700">Dinâmica do leito menor e maior dos rios durante períodos de precipitação intensa e prolongada.</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                                <span class="text-xs font-bold text-amber-600 uppercase tracking-wider block mb-1">Factores Antrópicos (Ação Humana)</span>
+                                <p class="text-sm text-slate-700">Impermeabilização excessiva do solo (asfalto), remoção da vegetação ciliar e descarte irregular de resíduos.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lixo e Bueiros -->
+                    <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm relative overflow-hidden">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="p-3 bg-amber-50 text-amber-600 rounded-2xl">
+                                <i data-lucide="trash-2" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-900">Lixo & Obstrução da Drenagem</h3>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            O descarte inadequado de lixo nas vias públicas causa o entupimento sistemático de bueiros e sarjetas. Durante as chuvas, a água bloqueada transborda para residências e estabelecimentos, gerando prejuízos económicos e graves riscos biológicos.
+                        </p>
+                        <div class="p-4 rounded-xl bg-amber-50/60 border border-amber-200 text-amber-900 text-xs font-medium">
+                            <i data-lucide="alert-triangle" class="w-4 h-4 inline mr-1 text-amber-600"></i>
+                            A acumulação de resíduos reduz a capacidade do sistema pluvial em até 80%.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Doenças Associadas -->
+                <h3 class="text-2xl font-bold text-slate-900 mb-6 text-center">Riscos Biológicos e Doenças Associadas</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                    <div class="p-6 rounded-3xl bg-rose-50/50 border border-rose-100">
+                        <i data-lucide="bug" class="w-8 h-8 text-rose-600 mb-3"></i>
+                        <h4 class="text-lg font-bold text-slate-900 mb-2">Leptospirose</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Infeção bacteriana grave transmitida pelo contacto da pele com a água ou lama contaminada pela urina de roedores.
+                        </p>
+                    </div>
+
+                    <div class="p-6 rounded-3xl bg-amber-50/50 border border-amber-100">
+                        <i data-lucide="syringe" class="w-8 h-8 text-amber-600 mb-3"></i>
+                        <h4 class="text-lg font-bold text-slate-900 mb-2">Tétano</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Risco elevado de infeção por cortes e ferimentos causados por destroços metálicos ou entulho escondidos nas águas turvas.
+                        </p>
+                    </div>
+
+                    <div class="p-6 rounded-3xl bg-emerald-50/50 border border-emerald-100">
+                        <i data-lucide="shield-alert" class="w-8 h-8 text-emerald-600 mb-3"></i>
+                        <h4 class="text-lg font-bold text-slate-900 mb-2">Animais Peçonhentos</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Inundação de galerias força o desalojamento de escorpiões, serpentes e aranhas para o interior das residências.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Cuidados e Enquadramento Legal -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Cuidados Práticos -->
+                    <div class="glass-card p-8 rounded-3xl border border-slate-200">
+                        <h3 class="text-xl font-bold text-slate-900 mb-4 flex items-center">
+                            <i data-lucide="sparkles" class="w-5 h-5 text-eco-600 mr-2"></i>
+                            Cuidados Durante e Pós-Enchente
+                        </h3>
+                        <ul class="space-y-3 text-sm text-slate-600">
+                            <li class="flex items-start"><i data-lucide="check-circle" class="w-4 h-4 text-eco-600 mr-2 mt-0.5 shrink-0"></i> Utilizar Botas e Luvas de Borracha (EPIs) para qualquer limpeza.</li>
+                            <li class="flex items-start"><i data-lucide="check-circle" class="w-4 h-4 text-eco-600 mr-2 mt-0.5 shrink-0"></i> Consumir estritamente Água Potável (fervida ou tratada com hipoclorito).</li>
+                            <li class="flex items-start"><i data-lucide="check-circle" class="w-4 h-4 text-eco-600 mr-2 mt-0.5 shrink-0"></i> Desinfetar residências, superfícies e móveis com solução de Água Sanitária.</li>
+                            <li class="flex items-start"><i data-lucide="check-circle" class="w-4 h-4 text-eco-600 mr-2 mt-0.5 shrink-0"></i> Descartar todos os alimentos que tenham entrado em contacto com a água da enchente.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Legislação -->
+                    <div class="bg-slate-900 text-white p-8 rounded-3xl shadow-xl relative">
+                        <span class="text-xs font-bold text-eco-400 uppercase tracking-widest block mb-2">Enquadramento Jurídico</span>
+                        <h3 class="text-xl font-bold mb-4">Responsabilidade do Poder Público</h3>
+                        <div class="space-y-3 text-xs text-slate-300 leading-relaxed">
+                            <p class="p-3 bg-slate-800/80 rounded-xl border border-slate-700">
+                                <strong class="text-white block mb-1">Lei Federal nº 12.608/2012:</strong> Institui a Política Nacional de Proteção e Defesa Civil (PNPDEC), impondo ao Estado o dever de prevenção de desastres urbanos.
+                            </p>
+                            <p class="p-3 bg-slate-800/80 rounded-xl border border-slate-700">
+                                <strong class="text-white block mb-1">Art. 37, §6º da CF/88:</strong> Responsabilidade Civil Objetiva do Estado por omissão na manutenção de infraestruturas essenciais de drenagem pluvial.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. DUPLA 3: LIXO E DOENÇAS -->
+        <section id="dupla3" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-slate-200">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-5 order-2 lg:order-1 reveal-left">
+                    <div class="glass-card p-8 rounded-3xl border border-slate-200 space-y-6">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center">
+                                <i data-lucide="recycle" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900">Soluções Sustentáveis</h3>
+                                <p class="text-xs text-slate-500">Ações fundamentais de gestão</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm">
+                                <h4 class="font-bold text-slate-900 text-sm mb-1">Coleta Seletiva</h4>
+                                <p class="text-xs text-slate-600">Separação na fonte de resíduos orgânicos e recicláveis (papel, plástico, vidro, metal).</p>
+                            </div>
+
+                            <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm">
+                                <h4 class="font-bold text-slate-900 text-sm mb-1">Economia Circular & Valorização</h4>
+                                <p class="text-xs text-slate-600">Redução do volume enviado para aterros sanitários e geração de rendimento para cooperativas de catadores.</p>
+                            </div>
+
+                            <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm">
+                                <h4 class="font-bold text-slate-900 text-sm mb-1">Acondicionamento Adequado</h4>
+                                <p class="text-xs text-slate-600">Uso de contentores fechados para evitar o acesso de animais e a proliferação de vetores.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 order-1 lg:order-2 reveal-right">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-amber-100 text-amber-800 text-xs font-bold mb-4">
+                        <i data-lucide="users" class="w-4 h-4"></i>
+                        <span>Dupla 3 • Ana e Milene</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-6">
+                        Lixo e Doenças Transmissíveis
+                    </h2>
+                    <p class="text-slate-600 text-base leading-relaxed mb-8">
+                        A gestão inadequada dos resíduos sólidos urbanos transforma o ambiente num ecossistema propício para a reprodução de pragas urbanas e agentes patogénicos letais.
+                    </p>
+
+                    <!-- Doenças transmissíveis grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
+                            <div class="text-eco-600 mb-2"><i data-lucide="bug" class="w-6 h-6"></i></div>
+                            <h4 class="font-bold text-slate-900 text-base mb-1">Dengue, Zika & Chikungunya</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Aclaramento de recipientes plásticos, pneus e tampas acumuladas com água da chuva torna-se viveiro do mosquito <em>Aedes aegypti</em>.
+                            </p>
+                        </div>
+
+                        <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
+                            <div class="text-amber-600 mb-2"><i data-lucide="rat" class="w-6 h-6"></i></div>
+                            <h4 class="font-bold text-slate-900 text-base mb-1">Proliferação de Ratos & Baratas</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Resíduos orgânicos expostos atraem roedores (vetores da leptospirose) e baratas (vetores de infeções gastrointestinais).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. DUPLA 4: ÁGUA, SANEAMENTO E SAÚDE -->
+        <section id="dupla4" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-slate-200">
+            <div class="reveal">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-ocean-50 text-ocean-800 text-xs font-bold mb-4">
+                        <i data-lucide="users" class="w-4 h-4"></i>
+                        <span>Dupla 4 • Mel e Isa</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
+                        Água, Saneamento e Saúde
+                    </h2>
+                    <p class="text-slate-600 text-base sm:text-lg">
+                        O saneamento básico é a fundação da medicina preventiva e um direito humano inalienável reconhecido universalmente.
+                    </p>
+                </div>
+
+                <!-- A Importância da Água Potável -->
+                <div class="bg-gradient-to-br from-ocean-900 to-slate-900 text-white rounded-3xl p-8 sm:p-12 mb-12 shadow-2xl relative overflow-hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center relative z-10">
+                        <div class="text-center md:text-left">
+                            <span class="text-5xl font-extrabold text-cyan-400 block mb-2">60% - 70%</span>
+                            <p class="text-xs uppercase tracking-wider text-slate-300">Constituição do Corpo Humano</p>
+                        </div>
+                        <div class="md:col-span-2 space-y-3">
+                            <h3 class="text-2xl font-bold text-white">Importância Vital da Água Tratada</h3>
+                            <p class="text-sm text-slate-300 leading-relaxed">
+                                A água potável é indispensável para a hidratação celular, preparação segura de alimentos e manutenção da higiene pessoal e doméstica. A ausência de água potável compromete diretamente o desenvolvimento humano.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Etapas de Tratamento -->
+                <div class="mb-16">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-6 text-center">Etapas do Tratamento de Água e Esgoto</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Tratamento de Água -->
+                        <div class="glass-card p-6 rounded-3xl border border-slate-200">
+                            <h4 class="text-lg font-bold text-ocean-900 mb-4 flex items-center">
+                                <i data-lucide="droplets" class="w-5 h-5 text-ocean-500 mr-2"></i>
+                                Ciclo de Tratamento da Água (ETA)
+                            </h4>
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                <div class="p-2.5 bg-slate-50 rounded-xl font-medium text-slate-700">1. Captação</div>
+                                <div class="p-2.5 bg-slate-50 rounded-xl font-medium text-slate-700">2. Coagulação</div>
+                                <div class="p-2.5 bg-slate-50 rounded-xl font-medium text-slate-700">3. Floculação</div>
+                                <div class="p-2.5 bg-slate-50 rounded-xl font-medium text-slate-700">4. Decantação</div>
+                                <div class="p-2.5 bg-slate-50 rounded-xl font-medium text-slate-700">5. Filtração</div>
+                                <div class="p-2.5 bg-slate-50 rounded-xl font-medium text-slate-700">6. Desinfecção</div>
+                                <div class="p-2.5 bg-slate-50 rounded-xl font-medium text-slate-700 col-span-2 text-center">7. Fluoretação</div>
+                            </div>
+                        </div>
+
+                        <!-- Tratamento de Esgoto -->
+                        <div class="glass-card p-6 rounded-3xl border border-slate-200">
+                            <h4 class="text-lg font-bold text-slate-900 mb-4 flex items-center">
+                                <i data-lucide="waves" class="w-5 h-5 text-eco-600 mr-2"></i>
+                                Tratamento do Esgoto (ETE)
+                            </h4>
+                            <div class="space-y-3 text-xs">
+                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                    <strong class="text-slate-900 block mb-0.5">Nível Preliminar:</strong> Gradeamento e desarenamento para remoção de resíduos sólidos grosseiros.
+                                </div>
+                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                    <strong class="text-slate-900 block mb-0.5">Tratamento Primário:</strong> Processos físicos de sedimentação de matéria orgânica suspensa.
+                                </div>
+                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                    <strong class="text-slate-900 block mb-0.5">Tratamento Secundário:</strong> Processos biológicos (bactérias aeróbias/anaeróbias) para degradação da matéria orgânica.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Impactos + Direitos Constitucionais e Canais -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Impactos da Falta de Saneamento -->
+                    <div class="p-8 rounded-3xl bg-rose-50/70 border border-rose-100">
+                        <h3 class="text-xl font-bold text-slate-900 mb-4 text-rose-900">Impactos da Falta de Saneamento</h3>
+                        <p class="text-xs text-slate-600 mb-4">A ausência de esgotamento sanitário desencadeia uma série de patologias evitáveis:</p>
+                        <div class="grid grid-cols-2 gap-3 text-xs font-semibold text-slate-800">
+                            <div class="p-3 bg-white rounded-xl border border-rose-200 flex items-center"><i data-lucide="check" class="w-4 h-4 text-rose-600 mr-1.5"></i> DDA (Doenças Diarreicas Agudas)</div>
+                            <div class="p-3 bg-white rounded-xl border border-rose-200 flex items-center"><i data-lucide="check" class="w-4 h-4 text-rose-600 mr-1.5"></i> Hepatite A</div>
+                            <div class="p-3 bg-white rounded-xl border border-rose-200 flex items-center"><i data-lucide="check" class="w-4 h-4 text-rose-600 mr-1.5"></i> Parasitoses Intestinais</div>
+                            <div class="p-3 bg-white rounded-xl border border-rose-200 flex items-center"><i data-lucide="check" class="w-4 h-4 text-rose-600 mr-1.5"></i> Focos de Dengue</div>
+                        </div>
+                    </div>
+
+                    <!-- Enquadramento Jurídico e Canais de Cobrança -->
+                    <div class="glass-card p-8 rounded-3xl border border-slate-200 space-y-4">
+                        <h3 class="text-xl font-bold text-slate-900">Direito Constitucional ao Saneamento</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            A saúde e a melhoria das condições de saneamento básico são deveres comuns da União, Estados e Municípios (<strong>Art. 196 e Art. 23, IX da CF/88</strong>), reforçados pelo <strong>Novo Marco Legal do Saneamento (Lei nº 14.026/2020)</strong>.
+                        </p>
+                        <div class="pt-2 border-t border-slate-200">
+                            <span class="text-xs font-bold text-slate-800 uppercase tracking-wider block mb-2">Canais Oficiais de Reclamação e Cobrança:</span>
+                            <div class="flex flex-wrap gap-2 text-xs">
+                                <span class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-800 font-bold border border-slate-200">Sabesp: 0800 055 0195</span>
+                                <span class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-800 font-bold border border-slate-200">Central SP: 156</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. DUPLA 5: POLUIÇÃO E SAÚDE -->
+        <section id="dupla5" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-slate-200">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-6 reveal-left">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-purple-100 text-purple-800 text-xs font-bold mb-4">
+                        <i data-lucide="user" class="w-4 h-4"></i>
+                        <span>Dupla 5 • Bia</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-6">
+                        Poluição e Saúde Humana
+                    </h2>
+                    <p class="text-slate-600 text-base leading-relaxed mb-6">
+                        A degradação das matrizes ambientais — ar, água e solo — gera impactes diretos na morbilidade e mortalidade global.
+                    </p>
+
+                    <div class="space-y-4">
+                        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-start space-x-3">
+                            <div class="p-2 bg-slate-100 text-slate-700 rounded-xl"><i data-lucide="cloud-off" class="w-5 h-5"></i></div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-sm">Poluição do Ar</h4>
+                                <p class="text-xs text-slate-600">Material particulado e gases tóxicos originam asma, bronquite crónica, cancro do pulmão e acidentes vasculares cerebrais.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-start space-x-3">
+                            <div class="p-2 bg-slate-100 text-slate-700 rounded-xl"><i data-lucide="flame" class="w-5 h-5"></i></div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-sm">Impacto das Queimadas Urbano-Rurais</h4>
+                                <p class="text-xs text-slate-600">Lançamento de monóxido de carbono na atmosfera intensifica crises respiratórias graves em crianças e idosos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 reveal-right">
+                    <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-8 rounded-3xl shadow-xl">
+                        <h3 class="text-xl font-bold mb-6 flex items-center text-eco-400">
+                            <i data-lucide="leaf" class="w-5 h-5 mr-2"></i>
+                            Ações Cotidianas para Reduzir a Poluição
+                        </h3>
+                        <ul class="space-y-4 text-xs text-slate-300">
+                            <li class="flex items-start">
+                                <span class="w-6 h-6 rounded-full bg-eco-500/20 text-eco-400 flex items-center justify-center font-bold mr-3 shrink-0">1</span>
+                                Priorizar transporte ativo (caminhada, bicicleta) ou transporte coletivo sustentável.
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-6 h-6 rounded-full bg-eco-500/20 text-eco-400 flex items-center justify-center font-bold mr-3 shrink-0">2</span>
+                                Eliminar completamente a prática de queimadas de lixo ou folhagem seca nos quintais.
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-6 h-6 rounded-full bg-eco-500/20 text-eco-400 flex items-center justify-center font-bold mr-3 shrink-0">3</span>
+                                Racionalizar o consumo de energia elétrica e optar por eletrodomésticos eficientes.
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-6 h-6 rounded-full bg-eco-500/20 text-eco-400 flex items-center justify-center font-bold mr-3 shrink-0">4</span>
+                                Apoiar e proteger a arborização urbana e áreas de preservação comunitária.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. DUPLA 6: MEIO AMBIENTE, SAÚDE E DIREITOS -->
+        <section id="dupla6" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-slate-200">
+            <div class="reveal">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-800 text-xs font-bold mb-4">
+                        <i data-lucide="user" class="w-4 h-4"></i>
+                        <span>Dupla 6 • Felipe</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
+                        Meio Ambiente, Saúde e Direitos
+                    </h2>
+                    <p class="text-slate-600 text-base sm:text-lg">
+                        O pilar constitucional da tutela ambiental e o exercício da cidadania ativa.
+                    </p>
+                </div>
+
+                <!-- Destaque Artigo 225 -->
+                <div class="glass-card border-2 border-eco-500/30 p-8 sm:p-12 rounded-3xl mb-12 shadow-xl relative overflow-hidden">
+                    <div class="max-w-3xl mx-auto text-center space-y-4">
+                        <span class="px-4 py-1.5 rounded-full bg-eco-100 text-eco-800 text-xs font-bold uppercase tracking-wider">Norma Constitucional Fundamental</span>
+                        <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-serif">Artigo 225 da Constituição Federal de 1988</h3>
+                        <blockquote class="text-base sm:text-lg text-slate-700 italic font-serif leading-relaxed">
+                            "Todos têm direito ao meio ambiente ecologicamente equilibrado, bem de uso comum do povo e essencial à sadia qualidade de vida, impondo-se ao Poder Público e à coletividade o dever de defendê-lo e preservá-lo para as presentes e futuras gerações."
+                        </blockquote>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Dever Coletivo -->
+                    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                        <div class="w-10 h-10 rounded-xl bg-eco-100 text-eco-700 flex items-center justify-center mb-4">
+                            <i data-lucide="scale" class="w-5 h-5"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-slate-900 mb-2">Dever do Estado e da Sociedade</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            A proteção ambiental não é competência exclusiva do governo; exige a corresponsabilidade ética e comunitária de cada cidadão.
+                        </p>
+                    </div>
+
+                    <!-- Ambiente e Saúde -->
+                    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                        <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center mb-4">
+                            <i data-lucide="heart" class="w-5 h-5"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-slate-900 mb-2">Ambiente Saudável = Saúde Pública</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Não existe saúde humana sem um ambiente hígido. O investimento em saneamento e preservação é o meio mais eficaz de saúde preventiva.
+                        </p>
+                    </div>
+
+                    <!-- Participação Popular -->
+                    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                        <div class="w-10 h-10 rounded-xl bg-ocean-50 text-ocean-800 flex items-center justify-center mb-4">
+                            <i data-lucide="megaphone" class="w-5 h-5"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-slate-900 mb-2">Cidadania Ativa & Participação</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            A população pode e deve intervir através de Conselhos Municipais de Meio Ambiente, Audiências Públicas e Denúncias nos Órgãos Ambientais e Ministério Público.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. CONCLUSÃO E ODS -->
+        <section id="ods" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="reveal">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-xs font-bold text-eco-600 uppercase tracking-widest block mb-2">Compromisso Global</span>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
+                        Objetivos de Desenvolvimento Sustentável (ODS)
+                    </h2>
+                    <p class="text-slate-600 text-base sm:text-lg">
+                        Articulação das propostas do projeto com a Agenda 2030 das Nações Unidas.
+                    </p>
+                </div>
+
+                <!-- Grid dos ODS -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-16">
+                    <!-- ODS 3 -->
+                    <div class="p-6 rounded-3xl bg-emerald-600 text-white shadow-lg flex flex-col justify-between">
+                        <div>
+                            <span class="text-2xl font-black block mb-2">ODS 3</span>
+                            <h3 class="font-bold text-base mb-2">Saúde e Bem-Estar</h3>
+                            <p class="text-xs text-emerald-100 leading-relaxed">Garantir a vida saudável e promover o bem-estar para todos, em todas as idades.</p>
+                        </div>
+                    </div>
+
+                    <!-- ODS 4 -->
+                    <div class="p-6 rounded-3xl bg-red-600 text-white shadow-lg flex flex-col justify-between">
+                        <div>
+                            <span class="text-2xl font-black block mb-2">ODS 4</span>
+                            <h3 class="font-bold text-base mb-2">Educação de Qualidade</h3>
+                            <p class="text-xs text-red-100 leading-relaxed">Garantir a educação inclusiva, equitativa e de qualidade através da literacia cidadã e EJA.</p>
+                        </div>
+                    </div>
+
+                    <!-- ODS 6 -->
+                    <div class="p-6 rounded-3xl bg-cyan-600 text-white shadow-lg flex flex-col justify-between">
+                        <div>
+                            <span class="text-2xl font-black block mb-2">ODS 6</span>
+                            <h3 class="font-bold text-base mb-2">Água Potável e Saneamento</h3>
+                            <p class="text-xs text-cyan-100 leading-relaxed">Garantir a disponibilidade e a gestão sustentável da água e saneamento para todos.</p>
+                        </div>
+                    </div>
+
+                    <!-- ODS 11 -->
+                    <div class="p-6 rounded-3xl bg-amber-600 text-white shadow-lg flex flex-col justify-between">
+                        <div>
+                            <span class="text-2xl font-black block mb-2">ODS 11</span>
+                            <h3 class="font-bold text-base mb-2">Cidades e Comunidades Sustentáveis</h3>
+                            <p class="text-xs text-amber-100 leading-relaxed">Tornar as cidades e os assentamentos humanos inclusivos, seguros, resilientes e sustentáveis.</p>
+                        </div>
+                    </div>
+
+                    <!-- ODS 12 -->
+                    <div class="p-6 rounded-3xl bg-orange-600 text-white shadow-lg flex flex-col justify-between">
+                        <div>
+                            <span class="text-2xl font-black block mb-2">ODS 12</span>
+                            <h3 class="font-bold text-base mb-2">Consumo e Produção Responsáveis</h3>
+                            <p class="text-xs text-orange-100 leading-relaxed">Garantir padrões de consumo e de produção sustentáveis com redução do desperdício e reciclagem.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mensagem Final -->
+                <div class="bg-gradient-to-r from-eco-900 via-teal-900 to-slate-900 text-white p-8 sm:p-12 rounded-3xl text-center shadow-2xl relative overflow-hidden">
+                    <div class="max-w-3xl mx-auto space-y-6">
+                        <i data-lucide="globe" class="w-12 h-12 text-eco-400 mx-auto"></i>
+                        <h3 class="text-2xl sm:text-4xl font-extrabold">Cidadania Transformativa para o Futuro</h3>
+                        <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
+                            A construção de um futuro sustentável exige conhecimento, consciência social e ação comunitária. Através da união entre a Educação de Jovens e Adultos e os princípios fundamentais do Direito, reafirmamos que defender o meio ambiente é defender a própria vida humana.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-xl bg-eco-600 text-white flex items-center justify-center">
+                    <i data-lucide="leaf" class="w-4 h-4"></i>
+                </div>
+                <span class="font-bold text-white text-sm">Meio Ambiente, Saúde Pública e Cidadania</span>
+            </div>
+            <p class="text-center sm:text-right text-slate-500">
+                Projeto Interdisciplinar EJA & Curso de Direito • Desenvolvido com consciência ambiental.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT & SCROLL INTERACTIVE LOGIC -->
+    <script>
+        // Inicialização de Ícones Lucide
+        lucide.createIcons();
+
+        // 1. Progress Bar Superior de Scroll
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+        });
+
+        // 2. Intersection Observer API para Animação Suave ao Rolar (Scroll Reveal)
+        const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-3d');
+        
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // 3. Botão Voltar ao Topo
+        const backToTopBtn = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                backToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+                backToTopBtn.classList.add('opacity-100');
+            } else {
+                backToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+                backToTopBtn.classList.remove('opacity-100');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 4. Auto-Scroll Infinito / Contínuo em Loop
+        const autoScrollBtn = document.getElementById('auto-scroll-btn');
+        const autoScrollIcon = document.getElementById('auto-scroll-icon');
+        const autoScrollIndicator = document.getElementById('auto-scroll-indicator');
+        let isAutoScrolling = false;
+        let autoScrollInterval = null;
+
+        function toggleAutoScroll() {
+            if (isAutoScrolling) {
+                // Parar Auto Scroll
+                clearInterval(autoScrollInterval);
+                isAutoScrolling = false;
+                autoScrollIndicator.classList.add('hidden');
+                autoScrollIcon.setAttribute('data-lucide', 'play');
+                lucide.createIcons();
+            } else {
+                // Iniciar Auto Scroll
+                isAutoScrolling = true;
+                autoScrollIndicator.classList.remove('hidden');
+                autoScrollIcon.setAttribute('data-lucide', 'pause');
+                lucide.createIcons();
+
+                autoScrollInterval = setInterval(() => {
+                    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                    if (window.scrollY >= maxScroll - 5) {
+                        // Ao chegar ao final, volta suavemente ao topo
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    } else {
+                        window.scrollBy({ top: 1.5, behavior: 'auto' });
+                    }
+                }, 16); // ~60fps
+            }
+        }
+
+        autoScrollBtn.addEventListener('click', toggleAutoScroll);
+
+        // Parar auto-scroll se o utilizador interagir manualmente com a roda do rato ou toque
+        window.addEventListener('wheel', () => {
+            if (isAutoScrolling) toggleAutoScroll();
+        });
+        window.addEventListener('touchstart', () => {
+            if (isAutoScrolling) toggleAutoScroll();
+        });
+
+        // 5. Menu Mobile Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
